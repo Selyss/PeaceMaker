@@ -22,7 +22,7 @@ fn App(cx: Scope) -> Element {
                 class: "flex flex-col gap-4",
                     input {
                         value: "{word}",
-                        onchange: move |evt| word.set(evt.value.clone()),
+                        oninput: move |evt| word.set(evt.value.clone()),
                     }
                     div {
                         class: "flex flex-row gap-4 justify-center",
