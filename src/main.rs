@@ -18,9 +18,17 @@ fn App(cx: Scope) -> Element {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-            input {
+            textarea {
+                // TODO: sanitize
+                // class: "opacity-0",
+                cols: "30",
+                rows: "3",
+                "type": "text",
+                spellcheck: "false",
+                maxlength: "6",
                 value: "{word}",
                 oninput: move |evt| word.set(evt.value.clone()),
+                autofocus: "true",
             }
             div {
                 class: "flex flex-row gap-4",
