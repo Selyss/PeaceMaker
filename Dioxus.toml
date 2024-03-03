@@ -1,0 +1,13 @@
+[application]
+default_platform = "desktop"
+name = "Ranagams"
+
+[web.app]
+title = "Ranagams"
+
+[web.watcher]
+reload_html = true
+
+[web.resource]
+
+[web.resource.dev]
