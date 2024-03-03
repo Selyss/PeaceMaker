@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+
 use dioxus::prelude::*;
 use dioxus_desktop::{Config, WindowBuilder};
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
@@ -26,14 +27,16 @@ fn App(cx: Scope) -> Element {
                 class: "flex flex-row gap-4",
                     div {
                         class: "flex flex-row gap-4 justify-center",
-                        for c in word.chars() {
+                        for c in word.chars().take(6) {
                             Tile { ch: "{c}" }
                         }
                     }
                     div {
                         class: "flex flex-row gap-4 justify-center",
-                        for _ in 0..(6 - word.len()) {
-                            empty_space(cx)
+                        if word.chars().count() <= 6 {
+                            for _ in 0..(6 - word.chars().count()) {
+                                rsx!(empty_space(cx));
+                            }
                         }
                     }
 
