@@ -22,7 +22,7 @@ fn App(cx: Scope) -> Element {
                 class: "flex flex-col gap-4",
                     input {
                         value: "{word}",
-                        oninput: move |evt| word.set(evt.value.clone()),
+                        onchange: move |evt| word.set(evt.value.clone()),
                     }
                     div {
                         class: "flex flex-row gap-4 justify-center",
@@ -32,8 +32,8 @@ fn App(cx: Scope) -> Element {
                     }
                     div {
                         class: "flex flex-row gap-4 justify-center",
-                        for c in vec!["A", "B", "C", "D", "E", "F"] {
-                            Tile { ch: c}
+                        for c in word.chars() {
+                            Tile { ch: c }
                         }
                     }
 
