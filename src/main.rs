@@ -17,23 +17,23 @@ fn App(cx: Scope) -> Element {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-
-            div {
-                class: "flex flex-col gap-4",
                     input {
                         value: "{word}",
                         oninput: move |evt| word.set(evt.value.clone()),
                     }
-                    div {
-                        class: "flex flex-row gap-4 justify-center",
-                        for _ in 0..6 {
-                            empty_space(cx)
-                        }
-                    }
+
+            div {
+                class: "flex flex-row gap-4",
                     div {
                         class: "flex flex-row gap-4 justify-center",
                         for c in word.chars() {
                             Tile { ch: "{c}" }
+                        }
+                    }
+                    div {
+                        class: "flex flex-row gap-4 justify-center",
+                        for _ in 0..(6 - word.len()) {
+                            empty_space(cx)
                         }
                     }
 
