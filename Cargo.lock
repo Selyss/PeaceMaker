@@ -1817,16 +1817,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "peacemaker"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "dioxus-desktop",
- "dioxus-material-icons",
- "rand 0.8.5",
-]
-
-[[package]]
 name = "percent-encoding"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2041,6 +2031,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "291ec9ab5efd934aaf503a6466c5d5251535d108ee747472c3977cc5acc868ef"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "ranagrams"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "dioxus-desktop",
+ "dioxus-material-icons",
+ "rand 0.8.5",
 ]
 
 [[package]]

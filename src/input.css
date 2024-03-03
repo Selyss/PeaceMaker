@@ -1,147 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
-  --light-beige: #faeac9;
-  --dark-beige: #fcdea3;
+
+.shi {
+  --tw-shadow: inset 0 2px 8px 3px rgba(0, 0, 0, 0.5); /* Adjust the values for increased definition /
+  --tw-shadow-colored: inset 0 2px 8px 3px var(--tw-shadow-color); / Adjusted definition */
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.wrapper {
-  background: #f3cc8b;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.input-container {
-}
-
-.rack {
-  width: 80vw;
-  height: 103px;
-  border-bottom: 4px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 0px 0px rgba(0, 0, 0, 0.2);
-  position: relative;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-
-  input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    background: transparent;
-    color: transparent;
-    border: none;
-    outline: none;
-    border-radius: 10px 10px 0 0;
-    box-sizing: border-box;
-    transition: all ease 320ms;
-
-    &:focus {
-      background: #c9aa74;
-    }
-  }
-}
-
-.tile {
-  --size: 100px;
-  --tile-color: #f5cf90;
-  pointer-events: none;
-  display: flex;
-  min-width: var(--size);
-  width: var(--size);
-  height: var(--size);
-  background: linear-gradient(
-    0.65turn,
-    var(--light-beige) 0%,
-    var(--dark-beige) 100%
-  );
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  font-family: Oswald, sans-serif;
-  font-size: calc(var(--size) * 0.65);
-  line-height: 1;
-  color: rgba(50, 0, 0, 0.6);
-  text-transform: uppercase;
-  box-sizing: border-box;
-  text-shadow: 1px 1px 6px var(--light-beige), 0 0 0 rgba(0, 0, 0, 0.7),
-    1px 2px 1px rgba(255, 255, 255, 0.5);
-  box-shadow: 0 2px 1px 0px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-top: 2px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 3px solid;
-  border-radius: 6px;
-  margin: 0 2px;
-  transform: rotate(calc(var(--rotate) * 1deg));
-
-  &[data-letter]::after {
-    font-family: sans-serif;
-    font-size: calc(var(--size) * 0.17);
-    position: absolute;
-    right: 0.25em;
-    bottom: 0.25em;
-    color: rgba(50, 0, 0, 0.6);
-    text-shadow: 1px 1px 6px var(--light-beige), 0 0 0 rgba(0, 0, 0, 0.7),
-      1px 2px 1px rgba(255, 255, 255, 0.5);
-  }
-
-  &[data-letter="e"],
-  &[data-letter="a"],
-  &[data-letter="i"],
-  &[data-letter="o"],
-  &[data-letter="n"],
-  &[data-letter="r"],
-  &[data-letter="t"],
-  &[data-letter="l"],
-  &[data-letter="s"],
-  &[data-letter="u"] {
-    &::after {
-      content: "1";
-    }
-  }
-  &[data-letter="d"],
-  &[data-letter="g"] {
-    &::after {
-      content: "2";
-    }
-  }
-  &[data-letter="b"],
-  &[data-letter="c"],
-  &[data-letter="m"],
-  &[data-letter="p"] {
-    &::after {
-      content: "3";
-    }
-  }
-  &[data-letter="f"],
-  &[data-letter="h"],
-  &[data-letter="v"],
-  &[data-letter="w"],
-  &[data-letter="y"] {
-    &::after {
-      content: "4";
-    }
-  }
-  &[data-letter="k"] {
-    &::after {
-      content: "5";
-    }
-  }
-  &[data-letter="j"],
-  &[data-letter="x"] {
-    &::after {
-      content: "8";
-    }
-  }
-  &[data-letter="q"],
-  &[data-letter="z"] {
-    &::after {
-      content: "10";
-    }
-  }
+.sho {
+  --tw-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5); /* Adjusted values for a more extreme shadow */
+  --tw-shadow-colored: 0 20px 40px -10px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
