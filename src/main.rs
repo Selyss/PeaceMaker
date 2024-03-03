@@ -2,8 +2,6 @@
 
 use dioxus::prelude::*;
 use dioxus_desktop::{Config, WindowBuilder};
-use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
-use rand::prelude::*;
 
 fn main() {
     dioxus_desktop::launch_cfg(
@@ -17,18 +15,23 @@ fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
-            class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
+            class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
+            div {
+                class: "absolute",
             textarea {
                 // TODO: sanitize
-                // class: "opacity-0",
-                cols: "30",
-                rows: "3",
+                // TODO: capture any key presses on focus instead?
+                class: "select-none opacity-0",
+                cols: "86",
+                rows: "4",
                 "type": "text",
                 spellcheck: "false",
                 maxlength: "6",
                 value: "{word}",
                 oninput: move |evt| word.set(evt.value.clone()),
                 autofocus: "true",
+            }
+
             }
             div {
                 class: "flex flex-row gap-4",

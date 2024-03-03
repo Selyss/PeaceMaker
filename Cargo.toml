@@ -8,5 +8,3 @@ edition = "2021"
 [dependencies]
 dioxus = "0.4.3"
 dioxus-desktop = "0.4.3"
-dioxus-material-icons = "1.2.0"
-rand = "0.8.5"
