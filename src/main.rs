@@ -33,7 +33,7 @@ fn App(cx: Scope) -> Element {
                     div {
                         class: "flex flex-row gap-4 justify-center",
                         for c in word.chars() {
-                            Tile { ch: c }
+                            Tile { ch: "{c}" }
                         }
                     }
 
