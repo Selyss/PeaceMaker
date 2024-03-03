@@ -12,14 +12,18 @@ fn main() {
 }
 
 fn App(cx: Scope) -> Element {
+    let word = use_state(cx, || "".to_string());
     cx.render(rsx! {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
-            // class: "bg-[#a08cb4]",
-                        class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
+            class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
 
             div {
                 class: "flex flex-col gap-4",
+                    input {
+                        value: "{word}",
+                        oninput: move |evt| word.set(evt.value.clone()),
+                    }
                     div {
                         class: "flex flex-row gap-4 justify-center",
                         for _ in 0..6 {
