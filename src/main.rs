@@ -32,9 +32,8 @@ fn App(cx: Scope) -> Element {
                     }
                     div {
                         class: "flex flex-row gap-4 justify-center",
-                        for _ in 0..6 {
-                            tile(cx)
-
+                        for c in vec!["A", "B", "C", "D", "E", "F"] {
+                            Tile { ch: c}
                         }
                     }
 
@@ -55,16 +54,20 @@ fn empty_space<'a>(cx: Scope<'a>) -> Element<'a> {
 
     })
 }
-fn tile<'a>(cx: Scope<'a>) -> Element<'a> {
+
+#[derive(Props)]
+struct TileProps<'a> {
+    ch: &'a str,
+}
+
+fn Tile<'a>(cx: Scope<'a, TileProps<'a>>) -> Element {
     cx.render(rsx! {
         div {
             class: "sho h-24 w-24 rounded-lg border-2 border-[#a78f5e] bg-wood",
             p {
-                class: "mt-3 text-center text-6xl font-bold",
-                "A"
+                class: "mt-3 text-center text-6xl font-bold uppercase",
+                cx.props.ch
             }
-
         }
-
     })
 }
