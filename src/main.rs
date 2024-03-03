@@ -18,34 +18,20 @@ fn App(cx: Scope) -> Element {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-                    input {
-                        value: "{word}",
-                        oninput: move |evt| word.set(evt.value.clone()),
-                    }
-
+            input {
+                value: "{word}",
+                oninput: move |evt| word.set(evt.value.clone()),
+            }
             div {
                 class: "flex flex-row gap-4",
-                    div {
-                        class: "flex flex-row gap-4 justify-center",
-                        for c in word.chars().take(6) {
-                            Tile { ch: "{c}" }
-                        }
-                    }
-                    div {
-                        class: "flex flex-row gap-4 justify-center",
-                        if word.chars().count() <= 6 {
-                            for _ in 0..(6 - word.chars().count()) {
-                                rsx!(empty_space(cx));
-                            }
-                        }
-                    }
-
+                for c in word.chars().take(6) {
+                    Tile { ch: "{c}" }
                 }
-
-
-
+                for _ in 0..(6 - word.chars().count().min(6)) {
+                    empty_space(cx)
+                }
+            }
         }
-
     })
 }
 
