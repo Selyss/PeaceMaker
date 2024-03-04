@@ -18,35 +18,34 @@ fn App(cx: Scope) -> Element {
             class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
             div {
                 class: "absolute",
-            textarea {
-                // TODO: sanitize
-                // TODO: capture any key presses on focus instead?
-                class: "select-none opacity-0",
-                cols: "86",
-                rows: "4",
-                "type": "text",
-                spellcheck: "false",
-                maxlength: "6",
-                value: "{word}",
-                oninput: move |evt| word.set(evt.value.clone()),
-                autofocus: "true",
-            }
-
+                textarea {
+                    // TODO: sanitize
+                    // TODO: capture any key presses on focus instead?
+                    class: "select-none opacity-0",
+                    cols: "86",
+                    rows: "4",
+                    "type": "text",
+                    spellcheck: "false",
+                    maxlength: "6",
+                    value: "{word}",
+                    oninput: move |evt| word.set(evt.value.clone()),
+                    autofocus: "true",
+                }
             }
             div {
-                class: "flex flex-row gap-4",
+                class: "flex flex-row gap-4 container justify-center",
                 for c in word.chars().take(6) {
                     Tile { ch: "{c}" }
                 }
                 for _ in 0..(6 - word.chars().count().min(6)) {
-                    empty_space(cx)
+                    EmptyTile(cx)
                 }
             }
         }
     })
 }
 
-fn empty_space<'a>(cx: Scope<'a>) -> Element<'a> {
+fn EmptyTile(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
             class: "shi h-24 w-24 rounded-lg bg-[#504464]",
