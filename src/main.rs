@@ -17,6 +17,23 @@ fn App(cx: Scope) -> Element {
         div {
             class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
             div {
+                class: "content-main",
+                div {
+                    class: "content-box",
+                    div {
+                        class: "flex flex-col",
+                        h1 {
+                            class: "font-black text-xl uppercase",
+                            "Words: 20"
+                        }
+                        h1 {
+                            class: "font-extrabold text-3xl uppercase",
+                            "Score: 0000"
+                        }
+                    }
+                }
+            }
+            div {
                 class: "absolute",
                 textarea {
                     // TODO: sanitize
@@ -50,7 +67,6 @@ fn EmptyTile(cx: Scope) -> Element {
         div {
             class: "shi h-24 w-24 rounded-lg bg-[#504464]",
         }
-
     })
 }
 
