@@ -16,23 +16,7 @@ fn App(cx: Scope) -> Element {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-            div {
-                class: "content-main",
-                div {
-                    class: "content-box",
-                    div {
-                        class: "flex flex-col",
-                        h1 {
-                            class: "font-black text-xl uppercase",
-                            "Words: 20"
-                        }
-                        h1 {
-                            class: "font-extrabold text-3xl uppercase",
-                            "Score: 0000"
-                        }
-                    }
-                }
-            }
+            // Score {cx}
             div {
                 class: "absolute",
                 textarea {
@@ -86,3 +70,35 @@ fn Tile<'a>(cx: Scope<'a, TileProps<'a>>) -> Element {
         }
     })
 }
+
+// #[derive(Props)]
+// struct ScoreProps {
+//     #[props(default = 0)]
+//     words: u32,
+//     #[props(default = 0000)]
+//     score: u32,
+// }
+//
+// fn Score(cx: Scope<ScoreProps>) -> Element {
+//     cx.render(rsx!{
+//         div {
+//             class: "content-main",
+//             div {
+//             class: "content-box",
+//             div {
+//             class: "flex flex-col",
+//             h1 {
+//             class: "font-black text-xl uppercase",
+//             "Words: 20"
+//             h1 {
+//                 class: "font-extrabold text-3xl uppercase",
+//                 "Score: 0000"
+//             }
+//         }
+//         }
+//     }
+// }
+//
+//     })
+//
+// }
