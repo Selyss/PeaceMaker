@@ -15,8 +15,8 @@ fn main() {
 fn App(cx: Scope) -> Element {
     let word = use_state(cx, || "".to_string());
     let query = use_state(cx, || "".to_string());
-    let future = use_future(cx, (query,), |(query,)| async move {
-        get_anagrams(query.as_str()).await.unwrap_or_default();
+    let future = use_future(cx, query, |query| async move {
+        fetch_anagrams(query.as_str()).await.unwrap_or_default()
     });
 
     cx.render(rsx! {
@@ -55,11 +55,38 @@ fn App(cx: Scope) -> Element {
                     EmptyTile(cx)
                 }
             }
+            div {
+                if let Some(future) = future.value() {
+                    rsx!(
+                        GetAnagrams { words: future.clone() }
+                    )
+                }
+            }
         }
     })
 }
 
-async fn get_anagrams(input: &str) -> Result<HashMap<String, u32>, reqwest::Error> {
+#[derive(Props, PartialEq, Clone, Debug, Default)]
+struct GetAnagramsProps {
+    words: HashMap<String, u32>,
+}
+
+fn GetAnagrams(cx: Scope<GetAnagramsProps>) -> Element {
+    cx.render(rsx! {
+        div {
+            class: "flex flex-row flex-wrap",
+            cx.props.words.iter().map(|(word, score)| rsx! {
+                div {
+                    class: "flex flex-row items-center justify-between p-2",
+                    span { "{word}" }
+                    span { "{score}" }
+                }
+            })
+        }
+    })
+}
+
+async fn fetch_anagrams(input: &str) -> reqwest::Result<HashMap<String, u32>> {
     let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string={input}"))
         .await?
         .json()
