@@ -14,8 +14,9 @@ fn main() {
 
 fn App(cx: Scope) -> Element {
     let word = use_state(cx, || "".to_string());
-    let future = use_future(cx, (), |_| async move {
-        get_anagrams().await.unwrap_or_default();
+    let query = use_state(cx, || "".to_string());
+    let future = use_future(cx, (query,), |(query,)| async move {
+        get_anagrams(query.as_str()).await.unwrap_or_default();
     });
 
     cx.render(rsx! {
@@ -35,12 +36,12 @@ fn App(cx: Scope) -> Element {
                     maxlength: "6",
                     value: "{word}",
                     autofocus: "true",
-                    oninput: move |evt| word.set(evt.value.clone()),
-                    onkeydown: move |evt| {
-                        if evt.key() == Key::Enter {
-                            future.restart()
+                    oninput: move |evt| {
+                        word.set(evt.value.clone());
+                        if word.len() == 5 {
+                            query.set(evt.value.clone())
                         }
-                    }
+                    },
                 }
             }
             div {
@@ -56,9 +57,8 @@ fn App(cx: Scope) -> Element {
     })
 }
 
-// TODO: add input str
-async fn get_anagrams() -> Result<HashMap<String, u32>, reqwest::Error> {
-    let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string=anagam"))
+async fn get_anagrams(input: &str) -> Result<HashMap<String, u32>, reqwest::Error> {
+    let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string={input}"))
         .await?
         .json()
         .await?;
