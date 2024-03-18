@@ -38,10 +38,12 @@ fn App(cx: Scope) -> Element {
                     autofocus: "true",
                     oninput: move |evt| {
                         word.set(evt.value.clone());
-                        if word.len() == 5 {
-                            query.set(evt.value.clone())
-                        }
                     },
+                    onkeypress: move |evt| {
+                        if evt.key() == Key::Enter {
+                            query.set(word.to_string())
+                        }
+                    }
                 }
             }
             div {
