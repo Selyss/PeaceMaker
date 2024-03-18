@@ -23,6 +23,10 @@ fn App(cx: Scope) -> Element {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
+            h1 {
+                class: "text-4xl font-bold m-0 py-5 text-center",
+                "Ranagams"
+            }
             // Score { words: 10, score: 10}
             div {
                 class: "absolute",
@@ -58,7 +62,10 @@ fn App(cx: Scope) -> Element {
             div {
                 if let Some(future) = future.value() {
                     rsx!(
-                        GetAnagrams { words: future.clone() }
+                        div {
+                            class: "mx-4",
+                            GetAnagrams { words: future.clone() }
+                        }
                     )
                 }
             }
@@ -74,17 +81,30 @@ struct GetAnagramsProps {
 fn GetAnagrams(cx: Scope<GetAnagramsProps>) -> Element {
     cx.render(rsx! {
         div {
-            class: "flex flex-wrap gap-4 justify-start-items-center p-4 bg-gray-100 rounded-lg shadow-lg",
-            cx.props.words.iter().map(|(word, score)| rsx! {
-                div {
-                    class: "flex flex-col items-center justify-center bg-white p-3 rounded shadow-sm border border-gray-200",
-                    span {
-                        class: "text-lg font-semibold text-gray-800",
-                        "{word}"
-                    }
-                    span {
-                        class: "text-sm font-medium text-gray-500",
-                        "{score}"
+            class: "grid grid-cols-4 gap-4 p-4 bg-gray-100 rounded-lg shadow-lg",
+            cx.props.words.iter().map(|(word, score)| {
+                // Determine the column style based on the score
+                let column_style = if *score >= 1500 {
+                    "bg-green-200"
+                } else if *score >= 1000 {
+                    "bg-blue-200"
+                } else if *score >= 500 {
+                    "bg-yellow-200"
+                } else {
+                    "bg-red-200"
+                };
+
+                rsx! {
+                    div {
+                        class: "flex flex-col items-center justify-center p-3 rounded shadow-sm border border-gray-200 {column_style}",
+                        span {
+                            class: "text-lg font-semibold text-gray-800",
+                            "{word}"
+                        }
+                        span {
+                            class: "text-sm font-medium text-gray-500",
+                            "{score}"
+                        }
                     }
                 }
             })
@@ -106,7 +126,6 @@ async fn fetch_anagrams(input: &str) -> reqwest::Result<Vec<(String, u32)>> {
         .await?
         .json()
         .await?;
-    println!("{:?}", res);
     Ok(sort_hashmap(res))
 }
 
