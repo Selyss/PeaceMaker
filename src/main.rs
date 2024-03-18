@@ -1,6 +1,8 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
+use std::collections::HashMap;
+
+use dioxus::{html::input_data::keyboard_types::Key, prelude::*};
 use dioxus_desktop::{Config, WindowBuilder};
 
 fn main() {
@@ -12,11 +14,15 @@ fn main() {
 
 fn App(cx: Scope) -> Element {
     let word = use_state(cx, || "".to_string());
+    let future = use_future(cx, (), |_| async move {
+        get_anagrams().await.unwrap_or_default();
+    });
+
     cx.render(rsx! {
         link { rel: "stylesheet", href: "../dist/output.css" }
         div {
             class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-            Score { words: 10, score: 10}
+            // Score { words: 10, score: 10}
             div {
                 class: "absolute",
                 textarea {
@@ -28,8 +34,13 @@ fn App(cx: Scope) -> Element {
                     spellcheck: "false",
                     maxlength: "6",
                     value: "{word}",
-                    oninput: move |evt| word.set(evt.value.clone()),
                     autofocus: "true",
+                    oninput: move |evt| word.set(evt.value.clone()),
+                    onkeydown: move |evt| {
+                        if evt.key() == Key::Enter {
+                            future.restart()
+                        }
+                    }
                 }
             }
             div {
@@ -43,6 +54,16 @@ fn App(cx: Scope) -> Element {
             }
         }
     })
+}
+
+// TODO: add input str
+async fn get_anagrams() -> Result<HashMap<String, u32>, reqwest::Error> {
+    let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string=anagam"))
+        .await?
+        .json()
+        .await?;
+    println!("{:?}", res);
+    Ok(res)
 }
 
 fn EmptyTile(cx: Scope) -> Element {
