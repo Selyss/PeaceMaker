@@ -68,31 +68,46 @@ fn App(cx: Scope) -> Element {
 
 #[derive(Props, PartialEq, Clone, Debug, Default)]
 struct GetAnagramsProps {
-    words: HashMap<String, u32>,
+    words: Vec<(String, u32)>,
 }
 
 fn GetAnagrams(cx: Scope<GetAnagramsProps>) -> Element {
     cx.render(rsx! {
         div {
-            class: "flex flex-row flex-wrap",
+            class: "flex flex-wrap gap-4 justify-start-items-center p-4 bg-gray-100 rounded-lg shadow-lg",
             cx.props.words.iter().map(|(word, score)| rsx! {
                 div {
-                    class: "flex flex-row items-center justify-between p-2",
-                    span { "{word}" }
-                    span { "{score}" }
+                    class: "flex flex-col items-center justify-center bg-white p-3 rounded shadow-sm border border-gray-200",
+                    span {
+                        class: "text-lg font-semibold text-gray-800",
+                        "{word}"
+                    }
+                    span {
+                        class: "text-sm font-medium text-gray-500",
+                        "{score}"
+                    }
                 }
             })
         }
     })
 }
 
-async fn fetch_anagrams(input: &str) -> reqwest::Result<HashMap<String, u32>> {
+fn sort_hashmap(hashmap: HashMap<String, u32>) -> Vec<(String, u32)> {
+    let mut vec: Vec<(String, u32)> = hashmap.into_iter().collect();
+
+    // Don't question it...
+    vec.sort_by(|a, b| b.1.cmp(&a.1));
+
+    return vec;
+}
+
+async fn fetch_anagrams(input: &str) -> reqwest::Result<Vec<(String, u32)>> {
     let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string={input}"))
         .await?
         .json()
         .await?;
     println!("{:?}", res);
-    Ok(res)
+    Ok(sort_hashmap(res))
 }
 
 fn EmptyTile(cx: Scope) -> Element {
