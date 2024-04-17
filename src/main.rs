@@ -111,10 +111,12 @@ fn sort_hashmap(hashmap: HashMap<String, u32>) -> Vec<(String, u32)> {
 }
 
 async fn fetch_anagrams(input: &str) -> reqwest::Result<Vec<(String, u32)>> {
-    let res: HashMap<String, u32> = reqwest::get(&format!("http://127.0.0.1:5000/?string={input}"))
-        .await?
-        .json()
-        .await?;
+    let res: HashMap<String, u32> = reqwest::get(&format!(
+        "https://flask-anagrams.vercel.app/?string={input}"
+    ))
+    .await?
+    .json()
+    .await?;
     Ok(sort_hashmap(res))
 }
 
