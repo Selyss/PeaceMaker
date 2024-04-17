@@ -81,28 +81,17 @@ struct GetAnagramsProps {
 fn GetAnagrams(cx: Scope<GetAnagramsProps>) -> Element {
     cx.render(rsx! {
         div {
-            class: "grid grid-cols-4 gap-4 p-4 bg-gray-100 rounded-lg shadow-lg",
+            class: "flex flex-col gap-2 p-4 bg-purple-800", // Adjusted for a single column with dark purple background
             cx.props.words.iter().map(|(word, score)| {
-                // Determine the column style based on the score
-                let column_style = if *score >= 1500 {
-                    "bg-green-200"
-                } else if *score >= 1000 {
-                    "bg-blue-200"
-                } else if *score >= 500 {
-                    "bg-yellow-200"
-                } else {
-                    "bg-red-200"
-                };
-
                 rsx! {
                     div {
-                        class: "flex flex-col items-center justify-center p-3 rounded shadow-sm border border-gray-200 {column_style}",
+                        class: "flex justify-between items-center", // Flex container for inline display of word and score
                         span {
-                            class: "text-lg font-semibold text-gray-800",
+                            class: "text-black", // Word in black
                             "{word}"
                         }
                         span {
-                            class: "text-sm font-medium text-gray-500",
+                            class: "text-white", // Score in white
                             "{score}"
                         }
                     }
