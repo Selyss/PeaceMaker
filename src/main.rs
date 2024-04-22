@@ -2,6 +2,8 @@
 
 use dioxus::prelude::*;
 use log::{info, LevelFilter};
+use reqwest::Error;
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, ops::Deref};
 
 fn main() {
@@ -10,6 +12,12 @@ fn main() {
     console_error_panic_hook::set_once();
 
     launch(app);
+}
+
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq, Clone)]
+struct Anagram {
+    word: String,
+    score: u16,
 }
 
 fn app() -> Element {
@@ -31,28 +39,35 @@ fn app() -> Element {
             // FIXME: REDO THIS PART TO OCCUR ON ENTER PRESS
             if let Some(Ok(words)) = anagrams.read().as_ref() {
                 {info!("we got anagrams!")}
-                DisplayAnagrams { anagrams: words.deref().to_vec() }
+                DisplayAnagrams { anagrams: words.to_owned() }
             }
         }
     }
 }
 
 #[component]
-fn DisplayAnagrams(anagrams: Vec<(String, u32)>) -> Element {
+fn Score() -> Element {
+    rsx! {
+        div {}
+    }
+}
+
+#[component]
+fn DisplayAnagrams(anagrams: Vec<Anagram>) -> Element {
     rsx! {
         div {
             class: "flex flex-col gap-2 p-4 bg-purple-800",
-            {anagrams.iter().map(|(word, score)|
+            {anagrams.iter().map(|gram|
                 rsx! {
                     div {
                         class: "flex justify-between items-center",
                         span {
                             class: "text-black",
-                            "{word}"
+                            "{gram.word}"
                         }
                         span {
                             class: "text-white",
-                            "{score}"
+                            "{gram.score}"
                         }
                     }
                 })
@@ -128,20 +143,22 @@ fn SearchBox(mut word: Signal<String>, mut draft: Signal<String>) -> Element {
     }
 }
 
-fn sort_hashmap(hashmap: HashMap<String, u32>) -> Vec<(String, u32)> {
-    let mut vec: Vec<(String, u32)> = hashmap.into_iter().collect();
-
-    // Don't question it...
-    vec.sort_by(|a, b| b.1.cmp(&a.1));
-
-    return vec;
-}
-
-async fn fetch_anagrams(input: &str) -> reqwest::Result<Vec<(String, u32)>> {
-    let res: HashMap<String, u32> =
+async fn fetch_anagrams(input: &str) -> Result<Vec<Anagram>, Error> {
+    let res: HashMap<String, u16> =
         reqwest::get(&format!("https://flask-anagrams.vercel.app?string={input}"))
             .await?
             .json()
             .await?;
-    Ok(sort_hashmap(res))
+
+    let mut anagrams = Vec::new();
+
+    // append Anagram to Vec
+    for (word, score) in res {
+        anagrams.push(Anagram { word, score });
+    }
+
+    // sort anagrams in desc order
+    anagrams.sort_by(|a, b| b.score.cmp(&a.score));
+
+    Ok(anagrams)
 }
