@@ -56,7 +56,7 @@ fn Score() -> Element {
 fn DisplayAnagrams(anagrams: Vec<Anagram>) -> Element {
     rsx! {
         div {
-            class: "flex flex-wrap gap-4 p-4 bg-purple-800 w-full max-w-4xl",
+            class: "flex flex-wrap items-center gap-4 p-4 bg-purple-800 w-full max-w-4xl",
             {anagrams.iter().map(|gram|
                 rsx! {
                     div {
@@ -66,7 +66,7 @@ fn DisplayAnagrams(anagrams: Vec<Anagram>) -> Element {
                             "{gram.word}"
                         }
                         span {
-                            class: "text-black",
+                            class: "text-white",
                             "{gram.score}"
                         }
                     }
