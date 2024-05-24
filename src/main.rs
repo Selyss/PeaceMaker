@@ -28,11 +28,11 @@ fn app() -> Element {
     rsx! {
         link { rel: "stylesheet", href: "main.css" }
         div {
-            class: "relative bg-[#a08cb4] h-screen flex flex-col justify-center items-center",
-            h1 {
-                class: "text-4xl font-bold text-center pb-40",
-                "Ranagams"
-            }
+            class: "bg-[#a08cb4] h-screen flex flex-col justify-center ",
+            // h1 {
+            //     class: "text-4xl font-bold text-center pb-40",
+            //     "Ranagams"
+            // }
             // TODO: add score
             LetterRow { draft }
             SearchBox { word, draft }
@@ -56,22 +56,21 @@ fn Score() -> Element {
 fn DisplayAnagrams(anagrams: Vec<Anagram>) -> Element {
     rsx! {
         div {
-            class: "flex flex-col gap-2 p-4 bg-purple-800",
+            class: "flex flex-wrap gap-4 p-4 bg-purple-800 w-full max-w-4xl",
             {anagrams.iter().map(|gram|
                 rsx! {
                     div {
-                        class: "flex justify-between items-center",
+                        class: "flex justify-between items-center bg-white p-2 rounded w-full sm:w-1/2 lg:w-1/3",
                         span {
                             class: "text-black",
                             "{gram.word}"
                         }
                         span {
-                            class: "text-white",
+                            class: "text-black",
                             "{gram.score}"
                         }
                     }
                 })
-
             }
         }
     }
@@ -81,7 +80,7 @@ fn DisplayAnagrams(anagrams: Vec<Anagram>) -> Element {
 fn LetterRow(mut draft: Signal<String>) -> Element {
     rsx! {
         div {
-            class: "absolute flex flex-row gap-4 container justify-center",
+            class: "flex flex-row gap-4 justify-center mb-4",
             for c in draft.read().chars().take(6) {
                 Tile { ch: "{c}" }
             }
@@ -118,10 +117,10 @@ fn Tile(ch: String) -> Element {
 fn SearchBox(mut word: Signal<String>, mut draft: Signal<String>) -> Element {
     rsx! {
         div {
-            class: "absolute",
+            class: "relative mb-4",
             textarea {
                 resize: "none",
-                class: "select-none opacity-0",
+                class: "select-none opacity-0 absolute inset-0",
                 cols: "86",
                 rows: "4",
                 "type": "text",
@@ -144,11 +143,10 @@ fn SearchBox(mut word: Signal<String>, mut draft: Signal<String>) -> Element {
 }
 
 async fn fetch_anagrams(input: &str) -> Result<Vec<Anagram>, Error> {
-    let res: HashMap<String, u16> =
-        reqwest::get(&format!("https://flask-anagrams.vercel.app?string={input}"))
-            .await?
-            .json()
-            .await?;
+    let res: HashMap<String, u16> = reqwest::get(&format!("http://127.0.0.1:5000?string={input}"))
+        .await?
+        .json()
+        .await?;
 
     let mut anagrams = Vec::new();
 
